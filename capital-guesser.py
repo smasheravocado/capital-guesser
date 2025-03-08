@@ -9,7 +9,7 @@ capital_count=len(capital_list)
 score=0
 guess="start"
 
-print("Have fun, press q to quit! ")
+print("Have fun, press q to quit! Enter to skip! ")
 
 while guess != 'q':
 
@@ -23,7 +23,7 @@ while guess != 'q':
         print("Great job!")
         score = score + 1
     elif guess == "q":
-        print ("bye")
+        print ("Bye")
     else:
         print("Whoops, thats not right")
     
