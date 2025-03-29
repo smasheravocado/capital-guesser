@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import random
+from re import M
 
 def guess_check(number):
     
@@ -11,9 +12,32 @@ def guess_check(number):
 
     return number 
 
+# Score functoin to crate/update a file for the score
+def score_file(action,score):
+
+    score_filename = '.cg-score'
+    
+    if action == "read_score":
+        try:
+            file = open(score_filename, 'r')
+            high_score = int(file.read())
+        except:
+            file = open(score_filename, 'w+')
+            file.write("0")
+            high_score = 0
+
+        file.close()
+        return high_score
+
+    elif action == "set_score":
+        file_set = open(score_filename, 'w')
+        file_set.write(str(score))
+        file_set.close()
+
 print("Capital guesser 🗼")
 continent_num=input("Contintent list \n\t1. Europe\n\t2. Asia\n\t3. Africa\n\t4. North America\n\t5. Oceania\n\t6. South Amarica\nWhat contenet do you choose [1-6]? ")
 
+high_score = score_file("read_score",0)
 continent=guess_check(continent_num)
 
 ''' let the user select the continent '''
@@ -35,7 +59,9 @@ score=0
 guess="start"
 turns=0
 
+print("The current high score is 🎯 ",high_score)
 print("Have fun, you have 20 turns or press q to quit! Enter to skip! ")
+print("")
 
 while guess != 'q' and turns != 20:
 
@@ -59,7 +85,9 @@ while guess != 'q' and turns != 20:
     else:
         print("Whoops, thats not right")
     
-if score < 10:
+if score < high_score:
     print("Nice try, your score was",score)
 else: 
-    print("Amazing! your score is",score,"congratulations 🌈")
+    score_file("set_score",score)
+    print("Amazing! You beat the high score! Your score is",score,"congratulations 🌈")
+    
