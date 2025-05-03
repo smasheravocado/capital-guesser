@@ -2,15 +2,28 @@
 
 import random
 from re import M
+import re
+import os
 
-def guess_check(number):
-    
-    number = int(number)
-    while number < 1 or number > 6:
-        number=input("That's the wrong selection, please try again: ")
-        number = int(number)
+# Stackoverflow code
+def has_numbers(inputString):
+    return bool(re.search(r'^\d+$', inputString))
 
-    return number 
+# Number check from chatgpt
+def get_valid_number():
+    while True:
+        number=input("Contintent list \n\t1. Europe\n\t2. Asia\n\t3. Africa\n\t4. North America\n\t5. Oceania\n\t6. South Amarica\nWhat contenet do you choose [1-6]? ")
+
+        try:
+            number = int(number)
+            if 1 <= number <= 6:
+                return number
+            else:
+                print("Error: Number must be between 1 and 6.")
+        except ValueError:
+            print("Error: Invalid input. Please enter a number.")
+
+    return number
 
 # Score functoin to crate/update a file for the score
 def score_file(action,score):
@@ -34,11 +47,12 @@ def score_file(action,score):
         file_set.write(str(score))
         file_set.close()
 
+os.system('clear')
+
 print("Capital guesser 🗼")
-continent_num=input("Contintent list \n\t1. Europe\n\t2. Asia\n\t3. Africa\n\t4. North America\n\t5. Oceania\n\t6. South Amarica\nWhat contenet do you choose [1-6]? ")
+continent=get_valid_number()
 
 high_score = score_file("read_score",0)
-continent=guess_check(continent_num)
 
 ''' let the user select the continent '''
 if continent == 1:
@@ -73,7 +87,7 @@ while guess != 'q' and turns != 20:
     if turns == 19:
         print("It's your last turn! ")
 
-    guess=input("what is the capital of %s? " % country)
+    guess=input("What is the capital of %s? " % country)
     
     turns = turns + 1 
 
@@ -83,7 +97,7 @@ while guess != 'q' and turns != 20:
     elif guess == "q":
         print ("Bye")
     else:
-        print("Whoops, thats not right")
+        print("Whoops, thats not right, the answer is %s" % capital)
     
 if score < high_score:
     print("Nice try, your score was",score)
